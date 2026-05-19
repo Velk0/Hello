@@ -79,49 +79,36 @@ a {
 }
 
 .notification-buttons {
-  display: flex;
-  align-items: center;
+  position: relative;
+  width: 6.7em;
+  height: 3.2em;
   margin: auto;
   padding: 0;
 }
 
-.notification-buttons a {
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  /* Smooth easing for the animation */
-  overflow: hidden;
-  /* Prevents icon from spilling out while shrinking */
-  white-space: nowrap;
-}
-
-/* Ensure the icon height doesn't collapse */
-.notification-buttons a span {
-  display: block;
-  line-height: 1;
-}
-
-/* Base styles for the normal buttons */
-.notification-buttons .delete,
-.notification-buttons .view {
-  max-width: 4em;
-  opacity: 1;
-}
-
 .view {
   background-color: #2dd057;
-  margin-left: .3em;
-  position: relative;
-  /* Allows positioning of the waving hand icon */
+  position: absolute;
+  right: 0;
+  top: 0;
+  z-index: 3;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .delete {
   background-color: #ff443d;
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 2;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* Base styles for the icons to enable crossfading */
 .view .icon-drafts {
   opacity: 1;
   transform: scale(1);
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .view .icon-waving {
@@ -137,21 +124,17 @@ a {
 /* === THE ANIMATION ON HOVER === */
 /* Shrink and hide the delete button so the draft button can "eat" it */
 .notification-buttons:hover .delete {
-  max-width: 0;
-  padding: 0;
-  margin: 0;
   opacity: 0;
+  transform: scale(0.5);
+  pointer-events: none;
 }
 
 /* Expand the draft/view button into a pill shape */
 .notification-buttons:hover .view {
-  max-width: 8em;
   /* Expands to take over the space */
-  padding-left: 2em;
-  padding-right: 2em;
+  padding-left: 2.25em;
+  padding-right: 2.25em;
   border-radius: 5em;
-  margin-left: 0;
-  /* Shifts it left a bit to fill the gap */
 }
 
 /* Crossfade the icons */
@@ -169,7 +152,7 @@ a {
     use a smooth easing curve, and delay it by 0.2 seconds so it 
     waits for the button to finish expanding first.
   */
-  animation: premium-wave 0.6s ease-in-out 0.4s forwards;
+  animation: premium-wave 0.6s ease-in 0.4s forwards;
 
   /* This makes the hand pivot from the "wrist" (bottom) instead of the center */
   transform-origin: 50% 80%;
