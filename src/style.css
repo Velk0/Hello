@@ -1,0 +1,199 @@
+:root {
+  font-family: 'Inter', sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+}
+
+html,
+body {
+  height: 100%;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+}
+
+p {
+  color: white;
+}
+
+a {
+  display: inline-flex;
+  border-radius: 50%;
+  padding: 0.5em;
+  text-decoration: none;
+  color: #fffff9;
+  margin: auto;
+}
+
+.material-symbols-outlined {
+  font-size: 2.2em;
+}
+
+.hidden {
+  display: none;
+}
+
+.notification-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: auto;
+  min-height: 100vh;
+}
+
+.notification {
+  display: flex;
+  flex-direction: row;
+  padding: 0.6em;
+  margin: 1em;
+  border-radius: 5em;
+  background-color: black;
+}
+
+.profile-pic {
+  width: 4em;
+  height: 4em;
+  border-radius: 50%;
+  margin: auto;
+}
+
+.notification-content {
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+  margin-left: .3em;
+  margin-right: 5em;
+}
+
+.notification-sender {
+  font-weight: bold;
+}
+
+.notification-title {
+  color: #9d9ca3;
+}
+
+.notification-content p {
+  padding: 0;
+  margin: 0;
+}
+
+.notification-buttons {
+  display: flex;
+  align-items: center;
+  margin: auto;
+  padding: 0;
+}
+
+.notification-buttons a {
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  /* Smooth easing for the animation */
+  overflow: hidden;
+  /* Prevents icon from spilling out while shrinking */
+  white-space: nowrap;
+}
+
+/* Ensure the icon height doesn't collapse */
+.notification-buttons a span {
+  display: block;
+  line-height: 1;
+}
+
+/* Base styles for the normal buttons */
+.notification-buttons .delete,
+.notification-buttons .view {
+  max-width: 4em;
+  opacity: 1;
+}
+
+.view {
+  background-color: #2dd057;
+  margin-left: .3em;
+  position: relative;
+  /* Allows positioning of the waving hand icon */
+}
+
+.delete {
+  background-color: #ff443d;
+}
+
+/* Base styles for the icons to enable crossfading */
+.view .icon-drafts {
+  opacity: 1;
+  transform: scale(1);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.view .icon-waving {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.5);
+  /* Start small and centered */
+  opacity: 0;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* === THE ANIMATION ON HOVER === */
+/* Shrink and hide the delete button so the draft button can "eat" it */
+.notification-buttons:hover .delete {
+  max-width: 0;
+  padding: 0;
+  margin: 0;
+  opacity: 0;
+}
+
+/* Expand the draft/view button into a pill shape */
+.notification-buttons:hover .view {
+  max-width: 8em;
+  /* Expands to take over the space */
+  padding-left: 2em;
+  padding-right: 2em;
+  border-radius: 5em;
+  margin-left: 0;
+  /* Shifts it left a bit to fill the gap */
+}
+
+/* Crossfade the icons */
+.notification-buttons:hover .icon-drafts {
+  opacity: 0;
+  transform: scale(0.5);
+}
+
+.notification-buttons:hover .icon-waving {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+
+  /* The magic formula: 
+    Use the 'premium-wave' animation, make it take 0.6 seconds, 
+    use a smooth easing curve, and delay it by 0.2 seconds so it 
+    waits for the button to finish expanding first.
+  */
+  animation: premium-wave 0.6s ease-in-out 0.4s forwards;
+
+  /* This makes the hand pivot from the "wrist" (bottom) instead of the center */
+  transform-origin: 50% 80%;
+}
+
+/* === THE WAVE ANIMATION === */
+@keyframes premium-wave {
+  0% {
+    transform: translate(-50%, -50%) scale(1) rotate(0deg);
+  }
+
+  25% {
+    transform: translate(-50%, -50%) scale(1) rotate(16deg);
+  }
+
+  50% {
+    transform: translate(-50%, -50%) scale(1) rotate(-8deg);
+  }
+
+  75% {
+    transform: translate(-50%, -50%) scale(1) rotate(4deg);
+  }
+
+  100% {
+    transform: translate(-50%, -50%) scale(1) rotate(0deg);
+  }
+}
