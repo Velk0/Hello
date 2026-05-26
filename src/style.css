@@ -4,12 +4,22 @@
   font-weight: 400;
 }
 
+/* Disable transitions on initial page load */
+.preload * {
+  -webkit-transition: none !important;
+  -moz-transition: none !important;
+  -ms-transition: none !important;
+  -o-transition: none !important;
+  transition: none !important;
+}
+
 html,
 body {
   height: 100%;
   width: 100%;
   padding: 0;
   margin: 0;
+  overflow: hidden;
 }
 
 p {
@@ -39,6 +49,8 @@ a {
   align-items: center;
   margin: auto;
   min-height: 100vh;
+  position: relative;
+  z-index: 1;
 }
 
 .notification {
@@ -48,6 +60,14 @@ a {
   margin: 1em;
   border-radius: 5em;
   background-color: black;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.notification.dismissed {
+  opacity: 0;
+  transform: scale(0.9);
+  pointer-events: none;
 }
 
 .profile-pic {
@@ -62,7 +82,7 @@ a {
   flex-direction: column;
   margin: auto;
   margin-left: .3em;
-  margin-right: 5em;
+  margin-right: 3em;
 }
 
 .notification-sender {
@@ -92,7 +112,8 @@ a {
   right: 0;
   top: 0;
   z-index: 3;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: padding 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+    border-radius 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .delete {
@@ -101,14 +122,16 @@ a {
   left: 0;
   top: 0;
   z-index: 2;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* Base styles for the icons to enable crossfading */
 .view .icon-drafts {
   opacity: 1;
   transform: scale(1);
-  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .view .icon-waving {
@@ -118,7 +141,8 @@ a {
   transform: translate(-50%, -50%) scale(0.5);
   /* Start small and centered */
   opacity: 0;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* === THE ANIMATION ON HOVER === */
@@ -178,5 +202,65 @@ a {
 
   100% {
     transform: translate(-50%, -50%) scale(1) rotate(0deg);
+  }
+}
+
+/* === THE BACKGROUND REVEAL === */
+.bg-reveal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 200vmax;
+  height: 200vmax;
+  background-color: #000000;
+  border-radius: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  z-index: 2;
+  pointer-events: none;
+}
+
+.bg-reveal.active {
+  transform: translate(-50%, -50%) scale(1);
+  transition: transform 2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* === TERMINAL LAYER === */
+#terminal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  padding: 24px;
+  /* Gives it that slight inset from the edge */
+  box-sizing: border-box;
+  font-family: 'Ubuntu Mono', 'Consolas', monospace;
+  z-index: 3;
+  /* Crucial: Keeps it above the bg-reveal */
+  pointer-events: none;
+  /* Prevents it from blocking clicks */
+}
+
+/* The block cursor */
+.cursor {
+  display: inline-block;
+  width: 10px;
+  height: 1.2em;
+  background-color: #ffffff;
+  /* Matches your accept button green */
+  vertical-align: middle;
+  animation: blink 1s step-end infinite;
+}
+
+/* The blink animation */
+@keyframes blink {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0;
   }
 }
